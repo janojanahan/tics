@@ -1,5 +1,7 @@
 package com.mayatris.immutable.collections;
 
+import java.util.Optional;
+
 public interface ImmutableCollection<E> extends Iterable<E> {
 
     /**
@@ -7,16 +9,18 @@ public interface ImmutableCollection<E> extends Iterable<E> {
      *
      * @return Head element or null if empty
      */
-    E head();
+    Optional<E> head();
 
     /**
      * get the rest of the list with the head removed
      *
      * @return tail or null if not present
      */
-    ImmutableCollection<E> tail();
+    <K extends ImmutableCollection<E>> Optional<K> tail();
 
+    /**
+     * Returns size of the colleciton
+     */
 
-    Tuple2<E, ImmutableCollection<E>> splitAtHead();
-
+    int size();
 }
