@@ -1,7 +1,6 @@
 package com.mayatris.immutable.collections;
 
-import java.util.Iterator;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by jano on 10/09/15.
@@ -18,12 +17,8 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         data = newArray(size);
     }
 
-    public ImmutableArrayList(T... values) {
-        this(values.length);
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] == null) throw new NullPointerException();
-            data[i] = values[i];
-        }
+    private ImmutableArrayList(T... values) {
+        data = values;
     }
 
     private T[] newArray(int i) {
@@ -53,12 +48,27 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
     @Override
     public <K extends ImmutableList<T>> K add(T item) {
-        if (item == null) throw new NullPointerException();
+        Objects.requireNonNull(item);
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(size() + 1);
 
         System.arraycopy(data, 0, newList.data, 0, data.length);
         newList.data[data.length] = item;
         return (K) newList;
+    }
+
+    public static <T> ImmutableList<T> fromValues(T... values) {
+        return new ImmutableArrayList<>(values);
+    }
+
+    public static <T> ImmutableList<T> from(Collection<T> collection) {
+        return fromValues((T[]) collection.toArray());
+    }
+
+    public static <T> ImmutableList<T> from(Iterator<T> iterator) {
+        List<T> copy = new LinkedList<>();
+        while (iterator.hasNext())
+            copy.add(iterator.next());
+        return from(copy);
     }
 
     private class ImmutableArrayListIterator implements Iterator<T> {
@@ -72,7 +82,13 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
         @Override
         public T next() {
+            if (!hasNext()) throw new NoSuchElementException();
             return data[position++];
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Cannot remove from immutable iterator");
         }
     }
 
