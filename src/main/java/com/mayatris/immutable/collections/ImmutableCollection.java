@@ -11,6 +11,10 @@ public interface ImmutableCollection<E> extends Iterable<E> {
      */
     Optional<E> head();
 
+    default E headOrElse(E other) {
+        return other;
+    }
+
     /**
      * get the rest of the list with the head removed
      *
@@ -23,4 +27,25 @@ public interface ImmutableCollection<E> extends Iterable<E> {
      */
 
     int size();
+
+    /**
+     * test if empty
+     *
+     * @return
+     */
+    default boolean isEmpty() {
+        return size() == 0;
+    }
+
+    /**
+     * <p> Returns a new colleciton of the same type that contains the item added. If the collection does
+     * not allow duplicates, it returns the same collection.</p>
+     * <p>>Collections that support this operation may place limitations on what elements may be added to this
+     * collection. In particular, some collections will refuse to add null elements, and others will impose
+     * restrictions on the type of elements that may be added. Collection classes should clearly specify in their
+     * documentation any restrictions on what elements may be added.</P
+     *
+     * @param item Item to be added.
+     */
+    <K extends ImmutableCollection<E>> K add(E item);
 }

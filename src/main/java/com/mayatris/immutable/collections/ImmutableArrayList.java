@@ -1,6 +1,9 @@
 package com.mayatris.immutable.collections;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Created by jano on 10/09/15.
@@ -17,7 +20,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         data = newArray(size);
     }
 
-    private ImmutableArrayList(T... values) {
+    ImmutableArrayList(T... values) {
         data = values;
     }
 
@@ -27,6 +30,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
     @Override
     public Optional<T> head() {
+        if (isEmpty()) return Optional.empty();
         throw new Error("Not implemented");
     }
 
@@ -47,7 +51,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
     }
 
     @Override
-    public <K extends ImmutableList<T>> K add(T item) {
+    public <K extends ImmutableCollection<T>> K add(T item) {
         Objects.requireNonNull(item);
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(size() + 1);
 
@@ -56,19 +60,14 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         return (K) newList;
     }
 
-    public static <T> ImmutableList<T> fromValues(T... values) {
-        return new ImmutableArrayList<>(values);
-    }
-
-    public static <T> ImmutableList<T> from(Collection<T> collection) {
-        return fromValues((T[]) collection.toArray());
-    }
-
-    public static <T> ImmutableList<T> from(Iterator<T> iterator) {
-        List<T> copy = new LinkedList<>();
-        while (iterator.hasNext())
-            copy.add(iterator.next());
-        return from(copy);
+    @Override
+    public T get(int index) {
+        if ((index < 0) || (index > data.length - 1)) {
+            throw new IndexOutOfBoundsException(
+                    String.format("Index %d is out of bounds to the size of this collection(%d)",
+                            index, data.length));
+        }
+        return data[index];
     }
 
     private class ImmutableArrayListIterator implements Iterator<T> {
