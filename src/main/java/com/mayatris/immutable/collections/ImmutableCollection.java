@@ -11,16 +11,30 @@ public interface ImmutableCollection<E> extends Iterable<E> {
      */
     Optional<E> head();
 
+    /**
+     * Get the head element if there are items in the list, otherwise return "other"
+     */
     default E headOrElse(E other) {
-        return other;
+        return head().orElse(other);
     }
 
     /**
-     * get the rest of the list with the head removed
+     * get the rest of the list with the head removed. Returns an empty list if no items remain.
      *
      * @return tail or null if not present
      */
-    <K extends ImmutableCollection<E>> Optional<K> tail();
+    <K extends ImmutableCollection<E>> K tail();
+
+    /**
+     * get the rest of the list with the head removed. Returns other if rest of the list would be empty
+     * @param other
+     * @param <K>
+     * @return
+     */
+    default <K extends ImmutableCollection<E>> K tailOrElse(K other){
+        K tail = tail();
+        return (tail.isEmpty() ? other : tail);
+    }
 
     /**
      * Returns size of the colleciton

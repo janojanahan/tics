@@ -1,9 +1,6 @@
 package com.mayatris.immutable.collections;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public interface ImmutableList<T> extends ImmutableCollection<T> {
 
@@ -31,4 +28,9 @@ public interface ImmutableList<T> extends ImmutableCollection<T> {
      * @throws IndexOutOfBoundsException - if the index is out of range (index < 0 || index >= size())
      */
     T get(int index);
+
+    @Override
+    default Optional<T> head(){
+       return (isEmpty() ? Optional.empty() : Optional.of(get(0)));
+    };
 }

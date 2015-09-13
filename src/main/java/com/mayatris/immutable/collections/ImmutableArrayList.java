@@ -29,25 +29,13 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
     }
 
     @Override
-    public Optional<T> head() {
-        if (isEmpty()) return Optional.empty();
-        throw new Error("Not implemented");
-    }
-
-    @Override
-    public <K extends ImmutableCollection<T>> Optional<K> tail() {
-        throw new Error("Not implemented");
+    public ImmutableArrayList<T> tail() {
+        return size() > 1 ? subList(1, size() - 1) : new ImmutableArrayList<>();
     }
 
     @Override
     public int size() {
         return data.length;
-    }
-
-
-    @Override
-    public Iterator<T> iterator() {
-        return new ImmutableArrayListIterator();
     }
 
     @Override
@@ -58,6 +46,18 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         System.arraycopy(data, 0, newList.data, 0, data.length);
         newList.data[data.length] = item;
         return (K) newList;
+    }
+
+    private ImmutableArrayList<T> subList(int startIndex, int size) {
+        //Note no range checks as is a private method, calling methos should assume values are correct.
+        ImmutableArrayList<T> newList = new ImmutableArrayList<>(size);
+        System.arraycopy(data, startIndex, newList.data, 0, size);
+        return newList;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ImmutableArrayListIterator();
     }
 
     @Override
