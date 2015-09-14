@@ -1,10 +1,6 @@
 package com.mayatris.commons.tics;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public interface ImmutableCollection<E> extends Iterable<E> {
 
@@ -90,4 +86,5 @@ public interface ImmutableCollection<E> extends Iterable<E> {
 
     <K extends ImmutableCollection<E>> K addAll(E... items);
 
+    <K extends ImmutableCollection<E>> K remove(E object);
 }

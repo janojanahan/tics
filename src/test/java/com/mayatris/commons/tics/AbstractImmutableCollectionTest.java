@@ -1,12 +1,11 @@
 package com.mayatris.commons.tics;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -108,7 +107,7 @@ public abstract class AbstractImmutableCollectionTest {
     @Test
     public void addAllCollection() {
         final ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
-        final Collection<String> other = Arrays.asList(new String[]{"b value 1", "b value 2"});
+        final Collection<String> other = Arrays.asList("b value 1", "b value 2");
 
         ImmutableCollection<String> mergedCollection = collectionInstance.addAll(other);
         assertThat(mergedCollection)
@@ -119,7 +118,7 @@ public abstract class AbstractImmutableCollectionTest {
     @Test
     public void addAllIterable() {
         final ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
-        final Iterable<String> other = Arrays.asList(new String[]{"b value 1", "b value 2"});
+        final Iterable<String> other = Arrays.asList("b value 1", "b value 2");
 
         ImmutableCollection<String> mergedCollection = collectionInstance.addAll(other);
         assertThat(mergedCollection)
@@ -146,6 +145,14 @@ public abstract class AbstractImmutableCollectionTest {
         assertThat(mergedCollection)
             .hasSize(5)
             .containsExactly("a value 1", "a value 2", "a", "b", "c");
+    }
+
+
+    @Test
+    public void removeThrowsException() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("1", "2");
+        assertThatThrownBy(() -> collection.remove(null))
+                .isInstanceOf(NullPointerException.class);
     }
 
     protected Iterator<String> newTestIterator() {

@@ -1,10 +1,10 @@
 package com.mayatris.commons.tics;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -81,6 +81,16 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
         assertThatThrownBy(() -> newListInstance.get(-1))
                 .isInstanceOf(IndexOutOfBoundsException.class)
                 .hasMessage("Index -1 is out of bounds to the size of this collection(1)");
+    }
+
+    @Test
+    public void listAllowsMultipleitemsOfTheSameValue() {
+        ImmutableList<String> lista = getListInstanceFromValues("value1", "value1", "value2");
+        assertThat(lista).hasSize(3);
+
+        ImmutableList<String> listb = getListInstance();
+        listb = listb.add("hello").add("hello").add("goodbye");
+        assertThat(listb).hasSize(3);
     }
 
 }
