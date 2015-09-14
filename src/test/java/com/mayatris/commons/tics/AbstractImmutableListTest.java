@@ -93,4 +93,16 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
         assertThat(listb).hasSize(3);
     }
 
+    @Test
+    public void removeAllItemsOfSameValueFromCollection() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "b");
+        assertThat(collection)
+                .hasSize(4);
+        collection = collection.remove("b");
+        assertThat(collection)
+                .hasSize(2)
+                .contains("a", "c")
+                .doesNotContain("b");
+    }
+
 }

@@ -155,6 +155,25 @@ public abstract class AbstractImmutableCollectionTest {
                 .isInstanceOf(NullPointerException.class);
     }
 
+    @Test
+    public void removeItemFromCollection() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c");
+        collection = collection.remove("b");
+        assertThat(collection)
+                .hasSize(2)
+                .contains("a", "c")
+                .doesNotContain("b");
+    }
+
+    @Test
+    public void removeItemThatDoesntExistFromCollection() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c");
+        collection = collection.remove("d");
+        assertThat(collection)
+                .hasSize(3)
+                .contains("a", "b", "c");
+    }
+
     protected Iterator<String> newTestIterator() {
         return new Iterator<String>() {
 

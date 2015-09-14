@@ -1,5 +1,6 @@
 package com.mayatris.commons.tics;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -70,7 +71,10 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
     @Override
     public <K extends ImmutableCollection<T>> K remove(T object) {
         Objects.requireNonNull(object);
-        return null;
+        ImmutableArrayList<T> newList = new ImmutableArrayList<>();
+        newList.data = (T[]) Arrays.stream(data).filter(s -> !s.equals(object)).toArray();
+
+        return (K) newList;
     }
 
 
