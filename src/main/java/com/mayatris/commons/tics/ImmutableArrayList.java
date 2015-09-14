@@ -49,12 +49,22 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
     @Override
     public <K extends ImmutableCollection<T>> K addAll(ImmutableCollection<T> items) {
-        throw new Error("Not Implemented");
+        if (items instanceof ImmutableArrayList) {
+            ImmutableArrayList<T> source = (ImmutableArrayList<T>) items;
+            return addAll(source.data);
+        } else {
+            return addAll(items.iterator());
+        }
     }
+
+
 
     @Override
     public <K extends ImmutableCollection<T>> K addAll(T... items) {
-        throw new Error("Not Implemented");
+        ImmutableArrayList<T> newList = new ImmutableArrayList<>(items.length + data.length);
+        System.arraycopy(data,0,newList.data, 0, data.length);
+        System.arraycopy(items,0,newList.data, data.length, items.length);
+        return (K) newList;
     }
 
     private ImmutableArrayList<T> subList(int startIndex, int size) {

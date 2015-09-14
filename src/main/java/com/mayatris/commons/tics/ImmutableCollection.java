@@ -69,7 +69,9 @@ public interface ImmutableCollection<E> extends Iterable<E> {
 
 
 
-    <K extends ImmutableCollection<E>> K addAll(ImmutableCollection<E> items);
+    default <K extends ImmutableCollection<E>> K addAll(ImmutableCollection<E> items) {
+        return addAll(items.iterator());
+    }
 
     default <K extends ImmutableCollection<E>> K addAll(Collection<E> items) {
         return addAll((E[]) items.toArray());
@@ -87,4 +89,5 @@ public interface ImmutableCollection<E> extends Iterable<E> {
     }
 
     <K extends ImmutableCollection<E>> K addAll(E... items);
+
 }

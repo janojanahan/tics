@@ -1,5 +1,7 @@
 package com.mayatris.commons.tics;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -12,9 +14,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public abstract class AbstractImmutableCollectionTest {
 
-    
+
     protected abstract ImmutableCollection<String> getCollectionInstance();
-    
+
     protected abstract ImmutableCollection<String> getCollectionInstanceFromValues(String... values);
 
     @Test
@@ -39,7 +41,7 @@ public abstract class AbstractImmutableCollectionTest {
 
         ImmutableCollection<String> collectionInstance = getCollectionInstance();
         assertThatThrownBy(() -> collectionInstance.add(null))
-                .isInstanceOf(NullPointerException.class);
+            .isInstanceOf(NullPointerException.class);
     }
 
     @Test
@@ -55,8 +57,8 @@ public abstract class AbstractImmutableCollectionTest {
 
         collectionInstance = collectionInstance.add("test");
         assertThat(collectionInstance.head())
-                .isPresent()
-                .contains("test");
+            .isPresent()
+            .contains("test");
     }
 
     @Test
@@ -88,13 +90,62 @@ public abstract class AbstractImmutableCollectionTest {
         ImmutableCollection<String> collectionInstance = getCollectionInstance();
         ImmutableList<String> other = ImmutableList.fromValues("a value");
         assertThat(collectionInstance.tailOrElse(other) == other);
-        
+
     }
-    
+
     @Test
     public void addAllImmutableCollection() {
-        ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
-        ImmutableList<String> other = ImmutableList.fromValues("b value 1", "b value 2");
+        final ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
+        final ImmutableList<String> other = ImmutableList.fromValues("b value 1", "b value 2");
+
+        ImmutableCollection<String> mergedCollection = collectionInstance.addAll(other);
+        assertThat(mergedCollection)
+            .hasSize(4)
+            .containsExactly("a value 1", "a value 2", "b value 1", "b value 2");
+    }
+
+
+    @Test
+    public void addAllCollection() {
+        final ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
+        final Collection<String> other = Arrays.asList(new String[]{"b value 1", "b value 2"});
+
+        ImmutableCollection<String> mergedCollection = collectionInstance.addAll(other);
+        assertThat(mergedCollection)
+            .hasSize(4)
+            .containsExactly("a value 1", "a value 2", "b value 1", "b value 2");
+    }
+
+    @Test
+    public void addAllIterable() {
+        final ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
+        final Iterable<String> other = Arrays.asList(new String[]{"b value 1", "b value 2"});
+
+        ImmutableCollection<String> mergedCollection = collectionInstance.addAll(other);
+        assertThat(mergedCollection)
+            .hasSize(4)
+            .containsExactly("a value 1", "a value 2", "b value 1", "b value 2");
+    }
+
+    @Test
+    public void addAllIterator() {
+        final ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
+        final Iterator<String> other = newTestIterator();
+
+        ImmutableCollection<String> mergedCollection = collectionInstance.addAll(other);
+        assertThat(mergedCollection)
+            .hasSize(7)
+            .containsExactly("a value 1", "a value 2", "0", "1", "2", "3", "4");
+    }
+
+    @Test
+    public void addAllValues() {
+        final ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
+
+        ImmutableCollection<String> mergedCollection = collectionInstance.addAll("a", "b", "c");
+        assertThat(mergedCollection)
+            .hasSize(5)
+            .containsExactly("a value 1", "a value 2", "a", "b", "c");
     }
 
     protected Iterator<String> newTestIterator() {
