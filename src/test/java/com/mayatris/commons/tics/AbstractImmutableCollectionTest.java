@@ -1,80 +1,83 @@
 package com.mayatris.commons.tics;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.Iterator;
 import java.util.Optional;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-/**
- * Created by jano on 13/09/15.
- */
 public abstract class AbstractImmutableCollectionTest {
-    protected ImmutableList<String> listInstance;
 
-
-    @Before
-    public abstract void setupList();
+    
+    protected abstract ImmutableCollection<String> getCollectionInstance();
+    
+    protected abstract ImmutableCollection<String> getCollectionInstanceFromValues(String... values);
 
     @Test
     public void addItems() {
-        listInstance = listInstance.add("item1");
+        ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("item1");
 
-        assertThat(listInstance.size()).isEqualTo(1);
-        assertThat(listInstance).hasSize(1);
-        assertThat(listInstance).isNotEmpty();
-        assertThat(listInstance).containsExactly("item1");
+        assertThat(collectionInstance.size()).isEqualTo(1);
+        assertThat(collectionInstance).hasSize(1);
+        assertThat(collectionInstance).isNotEmpty();
+        assertThat(collectionInstance).containsExactly("item1");
 
-        listInstance = listInstance.add("item2");
+        collectionInstance = collectionInstance.add("item2");
 
-        assertThat(listInstance.size()).isEqualTo(2);
-        assertThat(listInstance).hasSize(2);
-        assertThat(listInstance).isNotEmpty();
-        assertThat(listInstance).containsExactly("item1", "item2");
+        assertThat(collectionInstance.size()).isEqualTo(2);
+        assertThat(collectionInstance).hasSize(2);
+        assertThat(collectionInstance).isNotEmpty();
+        assertThat(collectionInstance).containsExactly("item1", "item2");
     }
 
     @Test
     public void addNullThrowsException() {
-        assertThatThrownBy(() -> listInstance.add(null))
+
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
+        assertThatThrownBy(() -> collectionInstance.add(null))
                 .isInstanceOf(NullPointerException.class);
     }
 
     @Test
     public void headOnEmptyListReturnsOptionalEmpty() {
-        assertThat(listInstance.head()).isEqualTo(Optional.empty());
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
+        assertThat(collectionInstance.head()).isEqualTo(Optional.empty());
     }
 
     @Test
     public void head() {
-        assertThat(listInstance.head()).isEmpty();
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
+        assertThat(collectionInstance.head()).isEmpty();
 
-        listInstance = listInstance.add("test");
-        assertThat(listInstance.head())
+        collectionInstance = collectionInstance.add("test");
+        assertThat(collectionInstance.head())
                 .isPresent()
                 .contains("test");
     }
 
     @Test
     public void headOrElse() {
-        assertThat(listInstance.headOrElse("other")).isEqualTo("other");
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
+        assertThat(collectionInstance.headOrElse("other")).isEqualTo("other");
 
-        listInstance = listInstance.add("head");
-        assertThat(listInstance.headOrElse("other")).isEqualTo("head");
+        collectionInstance = collectionInstance.add("head");
+        assertThat(collectionInstance.headOrElse("other")).isEqualTo("head");
     }
 
     @Test
     public void tail() {
-        assertThat(listInstance.tail().isEmpty());
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
+        assertThat(collectionInstance.tail().isEmpty());
 
-        listInstance = listInstance.add("item1");
-        assertThat(listInstance.tail().isEmpty());
+        collectionInstance = collectionInstance.add("item1");
+        assertThat(collectionInstance.tail().isEmpty());
 
-        listInstance = listInstance.add("item2");
-        assertThat(listInstance.<ImmutableCollection<String>>tail())
+        collectionInstance = collectionInstance.add("item2");
+        assertThat(collectionInstance.<ImmutableCollection<String>>tail())
             .containsOnly("item2")
             .hasSize(1);
 
@@ -82,10 +85,16 @@ public abstract class AbstractImmutableCollectionTest {
 
     @Test
     public void tailOrElse() {
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
         ImmutableList<String> other = ImmutableList.fromValues("a value");
-        assertThat(listInstance.tailOrElse(other) == other);
-
-
+        assertThat(collectionInstance.tailOrElse(other) == other);
+        
+    }
+    
+    @Test
+    public void addAllImmutableCollection() {
+        ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
+        ImmutableList<String> other = ImmutableList.fromValues("b value 1", "b value 2");
     }
 
     protected Iterator<String> newTestIterator() {

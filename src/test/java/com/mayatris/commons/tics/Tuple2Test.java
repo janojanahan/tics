@@ -1,7 +1,8 @@
 package com.mayatris.commons.tics;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

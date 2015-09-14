@@ -1,5 +1,9 @@
 package com.mayatris.commons.tics;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 public interface ImmutableCollection<E> extends Iterable<E> {
@@ -62,4 +66,25 @@ public interface ImmutableCollection<E> extends Iterable<E> {
      * @param item Item to be added.
      */
     <K extends ImmutableCollection<E>> K add(E item);
+
+
+
+    <K extends ImmutableCollection<E>> K addAll(ImmutableCollection<E> items);
+
+    default <K extends ImmutableCollection<E>> K addAll(Collection<E> items) {
+        return addAll((E[]) items.toArray());
+    }
+
+    default <K extends ImmutableCollection<E>> K addAll(Iterable<E> items) {
+        return addAll(items.iterator());
+    }
+
+    default <K extends ImmutableCollection<E>> K addAll(Iterator<E> items) {
+        List<E> tempList = new LinkedList<>();
+        items.forEachRemaining(e-> tempList.add(e));
+        E[] tempArray = (E[]) tempList.toArray();
+        return addAll(tempArray);
+    }
+
+    <K extends ImmutableCollection<E>> K addAll(E... items);
 }

@@ -1,18 +1,22 @@
 package com.mayatris.commons.tics;
 
-import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.junit.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.StrictAssertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public abstract class AbstractImmutableListTest extends AbstractImmutableCollectionTest {
 
+    protected abstract ImmutableList<String> getListInstance();
+    protected abstract ImmutableList<String> getListInstanceFromValues(String... values);
+
     @Test
     public void testNewListDefaults() {
+        ImmutableList<String> listInstance = getListInstance();
         assertThat(listInstance.size()).isEqualTo(0);
         assertThat(listInstance).hasSize(0);
         assertThat(listInstance).isEmpty();
@@ -21,7 +25,7 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
 
     @Test
     public void buildListFromValues() {
-        listInstance = ImmutableList.fromValues("hello", "goodbye");
+        ImmutableList<String> listInstance = getListInstanceFromValues("hello", "goodbye");
 
         assertThat(listInstance.size()).isEqualTo(2);
         assertThat(listInstance).hasSize(2);
@@ -32,7 +36,7 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
     @Test
     public void buildListFromJavaCollection() {
         Collection<String> collection = Arrays.asList("one", "two", "three");
-        listInstance = ImmutableList.from(collection);
+        ImmutableList<String> listInstance = ImmutableList.from(collection);
 
         assertThat(listInstance.size()).isEqualTo(3);
         assertThat(listInstance).hasSize(3);
@@ -46,7 +50,7 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
         Iterator<String> iterator = newTestIterator();
 
 
-        listInstance = ImmutableList.from(iterator);
+        ImmutableList<String> listInstance = ImmutableList.from(iterator);
 
         assertThat(listInstance.size()).isEqualTo(5);
         assertThat(listInstance).hasSize(5);
@@ -56,24 +60,25 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
 
     @Test
     public void testGet() {
-        listInstance = ImmutableList.fromValues("hello", "goodbye");
+        ImmutableList<String> listInstance = getListInstanceFromValues("hello", "goodbye");
         assertThat(listInstance.get(0)).isEqualTo("hello");
         assertThat(listInstance.get(1)).isEqualTo("goodbye");
     }
 
     @Test
     public void testGetIndexOutOFBounds() {
+        final ImmutableList<String> listInstance = getListInstance();
         assertThatThrownBy(() -> listInstance.get(0))
                 .isInstanceOf(IndexOutOfBoundsException.class)
                 .hasMessage("Index 0 is out of bounds to the size of this collection(0)")
                 .hasNoCause();
 
-        listInstance = ImmutableList.fromValues("value1");
+        ImmutableList<String> newListInstance = getListInstanceFromValues("value1");
 
-        assertThatThrownBy(() -> listInstance.get(1))
+        assertThatThrownBy(() -> newListInstance.get(1))
                 .isInstanceOf(IndexOutOfBoundsException.class)
                 .hasMessage("Index 1 is out of bounds to the size of this collection(1)");
-        assertThatThrownBy(() -> listInstance.get(-1))
+        assertThatThrownBy(() -> newListInstance.get(-1))
                 .isInstanceOf(IndexOutOfBoundsException.class)
                 .hasMessage("Index -1 is out of bounds to the size of this collection(1)");
     }

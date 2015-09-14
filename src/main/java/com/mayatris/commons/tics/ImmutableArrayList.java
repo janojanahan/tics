@@ -47,6 +47,16 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         return (K) newList;
     }
 
+    @Override
+    public <K extends ImmutableCollection<T>> K addAll(ImmutableCollection<T> items) {
+        throw new Error("Not Implemented");
+    }
+
+    @Override
+    public <K extends ImmutableCollection<T>> K addAll(T... items) {
+        throw new Error("Not Implemented");
+    }
+
     private ImmutableArrayList<T> subList(int startIndex, int size) {
         //Note no range checks as is a private method, calling methos should assume values are correct.
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(size);
