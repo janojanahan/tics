@@ -1,9 +1,8 @@
-package com.mayatris.immutable.collections;
+package com.mayatris.commons.tics;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Created by jano on 10/09/15.

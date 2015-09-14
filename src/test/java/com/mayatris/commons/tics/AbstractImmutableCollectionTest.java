@@ -1,6 +1,5 @@
-package com.mayatris.immutable.collections;
+package com.mayatris.commons.tics;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mayatris</groupId>
-    <artifactId>immutable-collections</artifactId>
+    <artifactId>tics</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>immutable-collections</name>
-    <url>http://maven.apache.org</url>
+    <name>tics</name>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

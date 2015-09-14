@@ -1,4 +1,4 @@
-package com.mayatris.immutable.collections;
+package com.mayatris.commons.tics;
 
 public class ImmutableArrayListTest extends AbstractImmutableListTest {
 

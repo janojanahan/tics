@@ -1,4 +1,4 @@
-package com.mayatris.immutable.collections;
+package com.mayatris.commons.tics;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.Test;
