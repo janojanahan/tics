@@ -1,27 +1,21 @@
 package com.mayatris.commons.tics;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.util.Iterator;
 import java.util.Optional;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-/**
- * Created by jano on 13/09/15.
- */
 public abstract class AbstractImmutableCollectionTest {
 
     
     protected abstract ImmutableCollection<String> getCollectionInstance();
     
     protected abstract ImmutableCollection<String> getCollectionInstanceFromValues(String... values);
-
-    @Before
-    public abstract void setupList();
 
     @Test
     public void addItems() {
@@ -42,17 +36,21 @@ public abstract class AbstractImmutableCollectionTest {
 
     @Test
     public void addNullThrowsException() {
+
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
         assertThatThrownBy(() -> collectionInstance.add(null))
                 .isInstanceOf(NullPointerException.class);
     }
 
     @Test
     public void headOnEmptyListReturnsOptionalEmpty() {
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
         assertThat(collectionInstance.head()).isEqualTo(Optional.empty());
     }
 
     @Test
     public void head() {
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
         assertThat(collectionInstance.head()).isEmpty();
 
         collectionInstance = collectionInstance.add("test");
@@ -63,6 +61,7 @@ public abstract class AbstractImmutableCollectionTest {
 
     @Test
     public void headOrElse() {
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
         assertThat(collectionInstance.headOrElse("other")).isEqualTo("other");
 
         collectionInstance = collectionInstance.add("head");
@@ -71,6 +70,7 @@ public abstract class AbstractImmutableCollectionTest {
 
     @Test
     public void tail() {
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
         assertThat(collectionInstance.tail().isEmpty());
 
         collectionInstance = collectionInstance.add("item1");
@@ -85,6 +85,7 @@ public abstract class AbstractImmutableCollectionTest {
 
     @Test
     public void tailOrElse() {
+        ImmutableCollection<String> collectionInstance = getCollectionInstance();
         ImmutableList<String> other = ImmutableList.fromValues("a value");
         assertThat(collectionInstance.tailOrElse(other) == other);
         
@@ -92,7 +93,7 @@ public abstract class AbstractImmutableCollectionTest {
     
     @Test
     public void addAllImmutableCollection() {
-        collectionInstance = collectionInstance.add("a value 1", "a value 2");
+        ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
         ImmutableList<String> other = ImmutableList.fromValues("b value 1", "b value 2");
     }
 
