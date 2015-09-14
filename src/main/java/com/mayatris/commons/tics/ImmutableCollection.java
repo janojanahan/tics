@@ -27,9 +27,6 @@ public interface ImmutableCollection<E> extends Iterable<E> {
 
     /**
      * get the rest of the list with the head removed. Returns other if rest of the list would be empty
-     * @param other
-     * @param <K>
-     * @return
      */
     default <K extends ImmutableCollection<E>> K tailOrElse(K other){
         K tail = tail();
@@ -37,7 +34,7 @@ public interface ImmutableCollection<E> extends Iterable<E> {
     }
 
     /**
-     * Returns size of the colleciton
+     * Returns size of the collection
      */
 
     int size();
@@ -52,7 +49,7 @@ public interface ImmutableCollection<E> extends Iterable<E> {
     }
 
     /**
-     * <p> Returns a new colleciton of the same type that contains the item added. If the collection does
+     * <p> Returns a new collection of the same type that contains the item added. If the collection does
      * not allow duplicates, it returns the same collection.</p>
      * <p>>Collections that support this operation may place limitations on what elements may be added to this
      * collection. In particular, some collections will refuse to add null elements, and others will impose
@@ -69,7 +66,9 @@ public interface ImmutableCollection<E> extends Iterable<E> {
         return addAll(items.iterator());
     }
 
+    @SuppressWarnings("unchecked")
     default <K extends ImmutableCollection<E>> K addAll(Collection<E> items) {
+        //noinspection unchecked
         return addAll((E[]) items.toArray());
     }
 
@@ -77,9 +76,10 @@ public interface ImmutableCollection<E> extends Iterable<E> {
         return addAll(items.iterator());
     }
 
+    @SuppressWarnings("unchecked")
     default <K extends ImmutableCollection<E>> K addAll(Iterator<E> items) {
         List<E> tempList = new LinkedList<>();
-        items.forEachRemaining(e-> tempList.add(e));
+        items.forEachRemaining(tempList::add);
         E[] tempArray = (E[]) tempList.toArray();
         return addAll(tempArray);
     }

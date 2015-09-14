@@ -174,7 +174,7 @@ public abstract class AbstractImmutableCollectionTest {
                 .contains("a", "b", "c");
     }
 
-    protected Iterator<String> newTestIterator() {
+    Iterator<String> newTestIterator() {
         return new Iterator<String>() {
 
             private int count = 0;

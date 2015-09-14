@@ -2,9 +2,6 @@ package com.mayatris.commons.tics;
 
 import java.util.Objects;
 
-/**
- * Created by jano on 25/08/15.
- */
 public final class Tuple2<A, B> {
     private final A item1;
     private final B item2;
@@ -15,7 +12,7 @@ public final class Tuple2<A, B> {
     }
 
     public static <L1, L2> Tuple2<L1, L2> from(L1 a, L2 b) {
-        return new Tuple2<L1, L2>(a, b);
+        return new Tuple2<>(a, b);
     }
 
     public A getItem1() {
@@ -27,17 +24,17 @@ public final class Tuple2<A, B> {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(item1, item2);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tuple2<?, ?> tuple2 = (Tuple2<?, ?>) o;
         return Objects.equals(item1, tuple2.item1) &&
                 Objects.equals(item2, tuple2.item2);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(item1, item2);
     }
 
     @Override

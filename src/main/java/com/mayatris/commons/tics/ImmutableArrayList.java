@@ -5,9 +5,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-/**
- * Created by jano on 10/09/15.
- */
 public class ImmutableArrayList<T> implements ImmutableList<T> {
 
     private T[] data;
@@ -24,10 +21,12 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         data = values;
     }
 
+    @SuppressWarnings("unchecked")
     private T[] newArray(int i) {
         return (T[]) new Object[i];
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public ImmutableArrayList<T> tail() {
         return size() > 1 ? subList(1, size() - 1) : new ImmutableArrayList<>();
@@ -38,6 +37,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         return data.length;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <K extends ImmutableCollection<T>> K add(T item) {
         Objects.requireNonNull(item);
@@ -45,9 +45,11 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
         System.arraycopy(data, 0, newList.data, 0, data.length);
         newList.data[data.length] = item;
+        //noinspection unchecked
         return (K) newList;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <K extends ImmutableCollection<T>> K addAll(ImmutableCollection<T> items) {
         if (items instanceof ImmutableArrayList) {
@@ -65,9 +67,11 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(items.length + data.length);
         System.arraycopy(data,0,newList.data, 0, data.length);
         System.arraycopy(items,0,newList.data, data.length, items.length);
+        //noinspection unchecked
         return (K) newList;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <K extends ImmutableCollection<T>> K remove(T object) {
         Objects.requireNonNull(object);
@@ -79,7 +83,6 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
 
     private ImmutableArrayList<T> subList(int startIndex, int size) {
-        //Note no range checks as is a private method, calling methos should assume values are correct.
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(size);
         System.arraycopy(data, startIndex, newList.data, 0, size);
         return newList;

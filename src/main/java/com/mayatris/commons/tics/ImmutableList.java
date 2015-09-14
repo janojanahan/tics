@@ -1,12 +1,24 @@
 package com.mayatris.commons.tics;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public interface ImmutableList<T> extends ImmutableCollection<T> {
+
+    static <T> ImmutableList<T> fromValues(T... values) {
+        return new ImmutableArrayList<>(values);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T> ImmutableList<T> from(Collection<T> collection) {
+        return fromValues((T[]) collection.toArray());
+    }
+
+    static <T> ImmutableList<T> from(Iterator<T> iterator) {
+        List<T> copy = new LinkedList<>();
+        while (iterator.hasNext())
+            copy.add(iterator.next());
+        return from(copy);
+    }
 
     /**
      * Returns the element at the specified position in this list.
@@ -18,23 +30,7 @@ public interface ImmutableList<T> extends ImmutableCollection<T> {
     T get(int index);
 
     @Override
-    default Optional<T> head(){
-       return (isEmpty() ? Optional.empty() : Optional.of(get(0)));
-    };
-
-
-    static <T> ImmutableList<T> fromValues(T... values) {
-        return new ImmutableArrayList<>(values);
-    }
-
-    static <T> ImmutableList<T> from(Collection<T> collection) {
-        return fromValues((T[]) collection.toArray());
-    }
-
-    static <T> ImmutableList<T> from(Iterator<T> iterator) {
-        List<T> copy = new LinkedList<>();
-        while (iterator.hasNext())
-            copy.add(iterator.next());
-        return from(copy);
+    default Optional<T> head() {
+        return (isEmpty() ? Optional.empty() : Optional.of(get(0)));
     }
 }

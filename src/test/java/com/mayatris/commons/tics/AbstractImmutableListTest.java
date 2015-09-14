@@ -84,13 +84,13 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
     }
 
     @Test
-    public void listAllowsMultipleitemsOfTheSameValue() {
-        ImmutableList<String> lista = getListInstanceFromValues("value1", "value1", "value2");
-        assertThat(lista).hasSize(3);
+    public void listAllowsMultipleItemsOfTheSameValue() {
+        ImmutableList<String> listA = getListInstanceFromValues("value1", "value1", "value2");
+        assertThat(listA).hasSize(3);
 
-        ImmutableList<String> listb = getListInstance();
-        listb = listb.add("hello").add("hello").add("goodbye");
-        assertThat(listb).hasSize(3);
+        ImmutableList<String> listB = getListInstance();
+        listB = listB.add("hello").add("hello").add("goodbye");
+        assertThat(listB).hasSize(3);
     }
 
     @Test
