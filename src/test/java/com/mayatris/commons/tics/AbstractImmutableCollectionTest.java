@@ -174,6 +174,25 @@ public abstract class AbstractImmutableCollectionTest {
                 .contains("a", "b", "c");
     }
 
+
+//    @Test
+//    public void removeAllNullsThrowsException() {
+//        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c");
+//
+//        assertThatThrownBy(collection.remove((String)null))
+//                .isInstanceOf(NullPointerException.class);
+//
+//        assertThatThrownBy(collection.remove((String)null))
+//                .isInstanceOf(NullPointerException.class);
+//
+//        assertThatThrownBy(collection.remove((String)null))
+//                .isInstanceOf(NullPointerException.class);
+//
+//        assertThatThrownBy(collection.remove((String)null))
+//                .isInstanceOf(NullPointerException.class);
+//
+//    }
+
     Iterator<String> newTestIterator() {
         return new Iterator<String>() {
 

@@ -87,4 +87,11 @@ public interface ImmutableCollection<E> extends Iterable<E> {
     <K extends ImmutableCollection<E>> K addAll(E... items);
 
     <K extends ImmutableCollection<E>> K remove(E object);
+
+//    <K extends ImmutableCollection<E>> K removeAll(E... items);
+//    <K extends ImmutableCollection<E>> K removeAll(ImmutableCollection<E> items);
+//    <K extends ImmutableCollection<E>> K removeAll(Iterator<E> items);
+//    <K extends ImmutableCollection<E>> K removeAll(Iterable<E> items);
+//    <K extends ImmutableCollection<E>> K removeAll(Collection<E> items);
+
 }
