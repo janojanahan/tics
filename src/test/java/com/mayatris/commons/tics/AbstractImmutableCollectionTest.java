@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -225,7 +226,56 @@ public abstract class AbstractImmutableCollectionTest {
 
     }
 
-    Iterator<String> newTestIterator() {
+    @Test
+    public void removeAllListOfValues() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d");
+        ImmutableCollection<String> mergedCollection = collection.removeAll("a", "c");
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+    @Test
+    public void removeAllImmutableCollection() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d");
+        ImmutableCollection<String> itemsToRemove = getCollectionInstanceFromValues("a", "c");
+        ImmutableCollection<String> mergedCollection = collection.removeAll(itemsToRemove);
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+    @Test
+    public void removeAllIterable() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d");
+        Iterable<String> itemsToRemove = testIterableOf("a", "c");
+        ImmutableCollection<String> mergedCollection = collection.removeAll(itemsToRemove);
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+    @Test
+    public void removeAllIterator() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d");
+        Iterator<String> itemsToRemove = testIteratorOf("a", "c");
+        ImmutableCollection<String> mergedCollection = collection.removeAll(itemsToRemove);
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+    @Test
+    public void removeAllCollection() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d");
+        Collection<String> itemsToRemove = Arrays.asList("a", "c");
+        ImmutableCollection<String> mergedCollection = collection.removeAll(itemsToRemove);
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+    protected Iterator<String> newTestIterator() {
         return new Iterator<String>() {
 
             private int count = 0;
@@ -238,6 +288,32 @@ public abstract class AbstractImmutableCollectionTest {
             @Override
             public String next() {
                 return "" + (count++);
+            }
+        };
+    }
+
+    protected Iterable<String> testIterableOf(final String... items) {
+        return new Iterable<String>() {
+            @Override
+            public Iterator<String> iterator() {
+                return testIteratorOf(items);
+            }
+        };
+    }
+
+    protected Iterator<String> testIteratorOf(final String... items) {
+        return new Iterator<String>() {
+
+            private int count = 0;
+
+            @Override
+            public boolean hasNext() {
+                return count < items.length;
+            }
+
+            @Override
+            public String next() {
+                return items[count++];
             }
         };
     }

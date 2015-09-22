@@ -105,4 +105,54 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
                 .doesNotContain("b");
     }
 
+    @Test
+    public void removeAllListOfValueswithDuplicates() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d", "c");
+        ImmutableCollection<String> mergedCollection = collection.removeAll("a", "c");
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+    @Test
+    public void removeAllImmutableCollectionWithDuplicates() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d", "a", "c");
+        ImmutableCollection<String> itemsToRemove = getCollectionInstanceFromValues("a", "c");
+        ImmutableCollection<String> mergedCollection = collection.removeAll(itemsToRemove);
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+    @Test
+    public void removeAllIterableWithDuplicates() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d", "a", "c");
+        Iterable<String> itemsToRemove = testIterableOf("a", "c");
+        ImmutableCollection<String> mergedCollection = collection.removeAll(itemsToRemove);
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+    @Test
+    public void removeAllIteratorWithDuplicates() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d", "a", "c");
+        Iterator<String> itemsToRemove = testIteratorOf("a", "c");
+        ImmutableCollection<String> mergedCollection = collection.removeAll(itemsToRemove);
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+    @Test
+    public void removeAllCollectionWithDuplicates() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("a", "b", "c", "d", "a", "c");
+        Collection<String> itemsToRemove = Arrays.asList("a", "c");
+        ImmutableCollection<String> mergedCollection = collection.removeAll(itemsToRemove);
+        assertThat(mergedCollection)
+            .hasSize(2)
+            .containsExactly("b", "d");
+    }
+
+
 }
