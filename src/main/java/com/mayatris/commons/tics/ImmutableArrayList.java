@@ -1,9 +1,12 @@
 package com.mayatris.commons.tics;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
 
 public class ImmutableArrayList<T> implements ImmutableList<T> {
 
@@ -52,7 +55,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
     @SuppressWarnings("unchecked")
     @Override
     public <K extends ImmutableCollection<T>> K addAll(ImmutableCollection<T> items) {
-        Objects.requireNonNull(items, "Paramter items, cannot be null");
+        Objects.requireNonNull(items, "Parameter items, cannot be null");
         if (items instanceof ImmutableArrayList) {
             ImmutableArrayList<T> source = (ImmutableArrayList<T>) items;
             return addAll(source.data);
@@ -65,7 +68,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
     @Override
     public <K extends ImmutableCollection<T>> K addAll(T... items) {
-        Objects.requireNonNull(items, "Paramter items, cannot be null");
+        Objects.requireNonNull(items, "Parameter items, cannot be null");
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(items.length + data.length);
         System.arraycopy(data,0,newList.data, 0, data.length);
         System.arraycopy(items,0,newList.data, data.length, items.length);
@@ -85,8 +88,15 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
     @Override
     public <K extends ImmutableCollection<T>> K removeAll(T... items) {
-        Objects.requireNonNull(items, "Paramter items, cannot be null");
-        throw new UnsupportedOperationException("Not implemented");
+        Objects.requireNonNull(items, "Parameter items, cannot be null");
+        Set<T> itemsToRemove = new HashSet<>();
+        Collections.addAll(itemsToRemove, items);
+
+        T[] newData = (T[])Arrays.stream(data)
+            .filter(s -> !itemsToRemove.contains(s))
+            .toArray(Object[]::new);
+        return (K) new ImmutableArrayList<T>(newData);
+
     }
 
 

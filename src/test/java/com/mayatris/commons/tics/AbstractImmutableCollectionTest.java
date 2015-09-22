@@ -98,23 +98,23 @@ public abstract class AbstractImmutableCollectionTest {
         ImmutableCollection<String> collection = getCollectionInstanceFromValues("1", "2");
         assertThatThrownBy(() -> collection.addAll((ImmutableCollection<String>)null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
 
         assertThatThrownBy(() -> collection.addAll((Collection<String>) null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
 
         assertThatThrownBy(() -> collection.addAll((Iterable<String>)null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
 
         assertThatThrownBy(() -> collection.addAll((Iterator<String>)null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
 
         assertThatThrownBy(() -> collection.addAll((String[])null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
     }
 
     @Test
@@ -206,23 +206,23 @@ public abstract class AbstractImmutableCollectionTest {
 
         assertThatThrownBy(() -> collection.removeAll((String[]) null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
 
         assertThatThrownBy(() -> collection.removeAll((Iterator<String>) null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
 
         assertThatThrownBy(() -> collection.removeAll((Iterable<String>) null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
 
         assertThatThrownBy(() -> collection.removeAll((Collection<String>) null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
 
         assertThatThrownBy(() -> collection.removeAll((ImmutableCollection<String>) null))
             .isInstanceOf(NullPointerException.class)
-            .hasMessage("Paramter items, cannot be null");
+            .hasMessage("Parameter items, cannot be null");
 
     }
 
