@@ -92,10 +92,29 @@ public interface ImmutableCollection<E> extends Iterable<E> {
 
     <K extends ImmutableCollection<E>> K remove(E object);
 
-//    <K extends ImmutableCollection<E>> K removeAll(E... items);
-//    <K extends ImmutableCollection<E>> K removeAll(ImmutableCollection<E> items);
-//    <K extends ImmutableCollection<E>> K removeAll(Iterator<E> items);
-//    <K extends ImmutableCollection<E>> K removeAll(Iterable<E> items);
-//    <K extends ImmutableCollection<E>> K removeAll(Collection<E> items);
+    <K extends ImmutableCollection<E>> K removeAll(E... items);
+
+    default <K extends ImmutableCollection<E>> K removeAll(ImmutableCollection<E> items) {
+        Objects.requireNonNull(items, "Paramter items, cannot be null");
+        return removeAll(items.iterator());
+    }
+
+    default <K extends ImmutableCollection<E>> K removeAll(Iterator<E> items) {
+        Objects.requireNonNull(items, "Paramter items, cannot be null");
+        List<E> tempList = new LinkedList<>();
+        items.forEachRemaining(tempList::add);
+        E[] tempArray = (E[]) tempList.toArray();
+        return removeAll(tempArray);
+    }
+
+    default <K extends ImmutableCollection<E>> K removeAll(Iterable<E> items){
+        Objects.requireNonNull(items, "Paramter items, cannot be null");
+        return removeAll(items.iterator());
+    };
+
+    default <K extends ImmutableCollection<E>> K removeAll(Collection<E> items) {
+        Objects.requireNonNull(items, "Paramter items, cannot be null");
+        return removeAll(items.iterator());
+    }
 
 }

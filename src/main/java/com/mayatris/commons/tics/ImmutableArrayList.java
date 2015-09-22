@@ -83,6 +83,12 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         return (K) newList;
     }
 
+    @Override
+    public <K extends ImmutableCollection<T>> K removeAll(T... items) {
+        Objects.requireNonNull(items, "Paramter items, cannot be null");
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
 
     private ImmutableArrayList<T> subList(int startIndex, int size) {
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(size);
