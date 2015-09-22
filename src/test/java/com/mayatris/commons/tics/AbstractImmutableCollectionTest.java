@@ -93,6 +93,30 @@ public abstract class AbstractImmutableCollectionTest {
     }
 
     @Test
+    public void addAllNullParamsThrowsException() {
+        ImmutableCollection<String> collection = getCollectionInstanceFromValues("1", "2");
+        assertThatThrownBy(() -> collection.addAll((ImmutableCollection<String>)null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Paramter items, cannot be null");
+
+        assertThatThrownBy(() -> collection.addAll((Collection<String>) null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Paramter items, cannot be null");
+
+        assertThatThrownBy(() -> collection.addAll((Iterable<String>)null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Paramter items, cannot be null");
+
+        assertThatThrownBy(() -> collection.addAll((Iterator<String>)null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Paramter items, cannot be null");
+
+        assertThatThrownBy(() -> collection.addAll((String[])null))
+            .isInstanceOf(NullPointerException.class)
+            .hasMessage("Paramter items, cannot be null");
+    }
+
+    @Test
     public void addAllImmutableCollection() {
         final ImmutableCollection<String> collectionInstance = getCollectionInstanceFromValues("a value 1", "a value 2");
         final ImmutableList<String> other = ImmutableList.fromValues("b value 1", "b value 2");

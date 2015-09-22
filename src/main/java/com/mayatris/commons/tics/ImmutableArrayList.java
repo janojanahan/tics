@@ -52,6 +52,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
     @SuppressWarnings("unchecked")
     @Override
     public <K extends ImmutableCollection<T>> K addAll(ImmutableCollection<T> items) {
+        Objects.requireNonNull(items, "Paramter items, cannot be null");
         if (items instanceof ImmutableArrayList) {
             ImmutableArrayList<T> source = (ImmutableArrayList<T>) items;
             return addAll(source.data);
@@ -64,6 +65,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
     @Override
     public <K extends ImmutableCollection<T>> K addAll(T... items) {
+        Objects.requireNonNull(items, "Paramter items, cannot be null");
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(items.length + data.length);
         System.arraycopy(data,0,newList.data, 0, data.length);
         System.arraycopy(items,0,newList.data, data.length, items.length);
