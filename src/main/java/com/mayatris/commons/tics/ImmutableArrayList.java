@@ -1,32 +1,16 @@
 package com.mayatris.commons.tics;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-public class ImmutableArrayList<T> implements ImmutableList<T> {
+public class ImmutableArrayList<T> extends AbstractArrayStore<T> implements ImmutableList<T> {
 
-    private T[] data;
-
-    public ImmutableArrayList() {
-        this(0);
-    }
-
-    private ImmutableArrayList(int size) {
-        data = newArray(size);
-    }
 
     ImmutableArrayList(T... values) {
-        data = values;
+        super(values);
     }
 
-    @SuppressWarnings("unchecked")
-    private T[] newArray(int i) {
-        return (T[]) new Object[i];
+    public ImmutableArrayList(int size) {
+        super(size);
     }
 
     @SuppressWarnings("unchecked")
@@ -94,7 +78,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
         T[] newData = (T[])Arrays.stream(data)
             .filter(s -> !itemsToRemove.contains(s))
-            .toArray(Object[]::new);
+                .toArray();
         return (K) new ImmutableArrayList<T>(newData);
 
     }
@@ -108,7 +92,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new ImmutableArrayListIterator();
+        return new ArrayStoreIterator();
     }
 
     @Override
@@ -119,27 +103,6 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
                             index, data.length));
         }
         return data[index];
-    }
-
-    private class ImmutableArrayListIterator implements Iterator<T> {
-
-        private int position = 0;
-
-        @Override
-        public boolean hasNext() {
-            return position < data.length;
-        }
-
-        @Override
-        public T next() {
-            if (!hasNext()) throw new NoSuchElementException();
-            return data[position++];
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException("Cannot remove from immutable iterator");
-        }
     }
 
 }
