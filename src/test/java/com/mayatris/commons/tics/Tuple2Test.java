@@ -16,8 +16,8 @@ public class Tuple2Test {
         Tuple2<String, Integer> tuple1 = Tuple2.from(param1, param2);
         Tuple2<String, Integer> tuple2 = Tuple2.from(param1, param2);
 
-        assertThat(tuple1.getItem1()).isEqualTo("test");
-        assertThat(tuple1.getItem2()).isEqualTo(12);
+        assertThat(tuple1.one()).isEqualTo("test");
+        assertThat(tuple1.two()).isEqualTo(12);
         assertThat(tuple1).isEqualTo(tuple2);
     }
 
@@ -25,6 +25,13 @@ public class Tuple2Test {
     public void strictTestEquals() {
         EqualsVerifier.forClass(Tuple2.class)
                 .verify();
+    }
+
+    @Test
+    public void fluentCreate() {
+        Tuple2<String, Boolean> tuple = Tuple2.of("one").and(true);
+        assertThat(tuple.one()).isEqualTo("one");
+        assertThat(tuple.two()).isEqualTo(Boolean.TRUE);
     }
 
 }

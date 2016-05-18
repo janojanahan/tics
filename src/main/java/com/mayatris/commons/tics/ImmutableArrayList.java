@@ -1,16 +1,27 @@
 package com.mayatris.commons.tics;
 
 import java.util.*;
+import java.util.function.Function;
 
-public class ImmutableArrayList<T> extends AbstractArrayStore<T> implements ImmutableList<T> {
+public class ImmutableArrayList<T> implements ImmutableList<T> {
 
+    private T[] data;
 
-    ImmutableArrayList(T... values) {
-        super(values);
+    public ImmutableArrayList() {
+        this(0);
     }
 
     public ImmutableArrayList(int size) {
-        super(size);
+        data = newArray(size);
+    }
+
+    @SuppressWarnings("unchecked")
+    private T[] newArray(int i) {
+        return (T[]) new Object[i];
+    }
+
+    public ImmutableArrayList(T... values) {
+        data = values.clone();
     }
 
     @SuppressWarnings("unchecked")
@@ -26,7 +37,7 @@ public class ImmutableArrayList<T> extends AbstractArrayStore<T> implements Immu
 
     @SuppressWarnings("unchecked")
     @Override
-    public <K extends ImmutableCollection<T>> K add(T item) {
+    public final <K extends ImmutableCollection<T>> K add(T item) {
         Objects.requireNonNull(item);
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(size() + 1);
 
@@ -38,7 +49,7 @@ public class ImmutableArrayList<T> extends AbstractArrayStore<T> implements Immu
 
     @SuppressWarnings("unchecked")
     @Override
-    public <K extends ImmutableCollection<T>> K addAll(ImmutableCollection<T> items) {
+    public final <K extends ImmutableCollection<T>> K addAll(ImmutableCollection<T> items) {
         Objects.requireNonNull(items, "Parameter items, cannot be null");
         if (items instanceof ImmutableArrayList) {
             ImmutableArrayList<T> source = (ImmutableArrayList<T>) items;
@@ -51,7 +62,8 @@ public class ImmutableArrayList<T> extends AbstractArrayStore<T> implements Immu
 
 
     @Override
-    public <K extends ImmutableCollection<T>> K addAll(T... items) {
+    @SafeVarargs
+    public final <K extends ImmutableCollection<T>> K addAll(T... items) {
         Objects.requireNonNull(items, "Parameter items, cannot be null");
         ImmutableArrayList<T> newList = new ImmutableArrayList<>(items.length + data.length);
         System.arraycopy(data,0,newList.data, 0, data.length);
@@ -105,4 +117,49 @@ public class ImmutableArrayList<T> extends AbstractArrayStore<T> implements Immu
         return data[index];
     }
 
+    @Override
+    public Set<T> toJavaSet(Set<T> set) {
+        for (T i : data) {
+            set.add(i);
+        }
+        return set;
+    }
+
+    @Override
+    public List<T> toJavaList(List<T> list) {
+        for (T i : data) {
+            list.add(i);
+        }
+        return list;
+    }
+
+    @Override
+    public <KEY> Map<KEY, T> constructMap(Function<T, Tuple2<KEY, T>> mapFunction, HashMap<KEY, T> map) {
+        for(T i: data) {
+            final Tuple2<KEY, T> tuple = mapFunction.apply(i);
+            map.put(tuple.one(), tuple.two());
+        }
+        return map;
+    }
+
+    private class ArrayStoreIterator implements Iterator<T> {
+
+        private int position = 0;
+
+        @Override
+        public boolean hasNext() {
+            return position < data.length;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            return data[position++];
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Cannot remove from an immutable iterator");
+        }
+    }
 }

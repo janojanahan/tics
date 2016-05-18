@@ -1,13 +1,17 @@
 package com.mayatris.commons.tics;
 
-import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.StrictAssertions.entry;
 
 public abstract class AbstractImmutableListTest extends AbstractImmutableCollectionTest {
 
@@ -154,5 +158,33 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
             .containsExactly("b", "d");
     }
 
+    @Test
+    public void toJavaSet(){
+        ImmutableCollection<String> immutableList = getListInstanceFromValues("one","one", "two", "three");
+        Set<String> javaSet = immutableList.toJavaSet();
+        assertThat(immutableList.size()).isEqualTo(4);
+        assertThat(javaSet).hasSize(3);
+        assertThat(javaSet).containsOnly("one", "two", "three");
+    }
+
+    @Test
+    public void toJavaList(){
+        ImmutableCollection<String> immutableList = getListInstanceFromValues("one","one", "two", "three");
+        List<String> javaList = immutableList.toJavaList();
+        assertThat(immutableList.size()).isEqualTo(4);
+        assertThat(javaList).hasSize(4);
+        assertThat(javaList).containsExactly("one", "one", "two", "three");
+    }
+
+    @Test
+    public void toJavaMap(){
+        ImmutableCollection<String> immutableList = getListInstanceFromValues("1","1", "2", "3");
+        Map<Integer, String> javaMap = immutableList.constructMap(i -> Tuple2
+            .of(Integer.parseInt(i))
+            .and(i));
+        assertThat(immutableList.size()).isEqualTo(4);
+        assertThat(javaMap).hasSize(3);
+        assertThat(javaMap).containsOnly(entry(1, "1"), entry(2, "2"), entry(3,"3"));
+    }
 
 }

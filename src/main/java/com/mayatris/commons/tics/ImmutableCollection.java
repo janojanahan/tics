@@ -2,7 +2,7 @@ package com.mayatris.commons.tics;
 
 import java.util.*;
 
-public interface ImmutableCollection<E> extends Iterable<E> {
+public interface ImmutableCollection<E> extends Iterable<E>, ToJavaCollection<E> {
 
     /**
      * Get the head of the list
@@ -49,9 +49,9 @@ public interface ImmutableCollection<E> extends Iterable<E> {
     }
 
     /**
-     * <p> Returns a new collection of the same type that contains the item added. If the collection does
+     * <p> Returns a new immutable collection of the same type that contains the item added. If the collection does
      * not allow duplicates, it returns the same collection.</p>
-     * <p>>Collections that support this operation may place limitations on what elements may be added to this
+     * <p>> Immutable Collections that support this operation may place limitations on what elements may be added to this
      * collection. In particular, some collections will refuse to add null elements, and others will impose
      * restrictions on the type of elements that may be added. Collection classes should clearly specify in their
      * documentation any restrictions on what elements may be added.</P
@@ -61,7 +61,16 @@ public interface ImmutableCollection<E> extends Iterable<E> {
     <K extends ImmutableCollection<E>> K add(E item);
 
 
-
+    /**
+     * <p> Returns a new immutable collection of the same type that contains the items added. If the collection does
+     * not allow duplicates, it returns an immutable collection with only non duplicates added.</p>
+     * <p>> Immutable Collections that support this operation may place limitations on what elements may be added to this
+     * collection. In particular, some collections will refuse to add null elements, and others will impose
+     * restrictions on the type of elements that may be added. Collection classes should clearly specify in their
+     * documentation any restrictions on what elements may be added.</P
+     *
+     * @param items Items to be added.
+     */
     default <K extends ImmutableCollection<E>> K addAll(ImmutableCollection<E> items) {
         Objects.requireNonNull(items, "Parameter items, cannot be null");
         return addAll(items.iterator());

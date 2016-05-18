@@ -11,15 +11,19 @@ public final class Tuple2<A, B> {
         this.item2 = item2;
     }
 
+    public static <L1> TupleBuilder of(L1 one) {
+        return new TupleBuilder<>(one);
+    }
+
     public static <L1, L2> Tuple2<L1, L2> from(L1 a, L2 b) {
         return new Tuple2<>(a, b);
     }
 
-    public A getItem1() {
+    public A one() {
         return item1;
     }
 
-    public B getItem2() {
+    public B two() {
         return item2;
     }
 
@@ -42,5 +46,17 @@ public final class Tuple2<A, B> {
         return "{item1=" + item1 +
                 ", item2=" + item2 +
                 '}';
+    }
+
+    public static class TupleBuilder<K> {
+        private final K one;
+
+        public TupleBuilder(K one) {
+            this.one = one;
+        }
+
+        public <V> Tuple2<K,V> and(V two) {
+            return new Tuple2<>(one, two);
+        }
     }
 }
