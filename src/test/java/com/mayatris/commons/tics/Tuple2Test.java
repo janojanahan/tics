@@ -27,6 +27,7 @@ public class Tuple2Test {
                 .verify();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void fluentCreate() {
         Tuple2<String, Boolean> tuple = Tuple2.of("one").and(true);

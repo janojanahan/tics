@@ -4,6 +4,7 @@ import java.util.*;
 
 public interface ImmutableList<T> extends ImmutableCollection<T> {
 
+    @SafeVarargs
     static <T> ImmutableList<T> fromValues(T... values) {
         return new ImmutableArrayList<>(values);
     }

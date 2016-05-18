@@ -11,7 +11,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         this(0);
     }
 
-    public ImmutableArrayList(int size) {
+    private ImmutableArrayList(int size) {
         data = newArray(size);
     }
 
@@ -20,6 +20,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         return (T[]) new Object[i];
     }
 
+    @SafeVarargs
     public ImmutableArrayList(T... values) {
         data = values.clone();
     }
@@ -82,6 +83,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         return (K) newList;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <K extends ImmutableCollection<T>> K removeAll(T... items) {
         Objects.requireNonNull(items, "Parameter items, cannot be null");
@@ -91,7 +93,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
         T[] newData = (T[])Arrays.stream(data)
             .filter(s -> !itemsToRemove.contains(s))
                 .toArray();
-        return (K) new ImmutableArrayList<T>(newData);
+        return (K) new ImmutableArrayList<>(newData);
 
     }
 
@@ -119,17 +121,13 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
 
     @Override
     public Set<T> toJavaSet(Set<T> set) {
-        for (T i : data) {
-            set.add(i);
-        }
+        Collections.addAll(set, data);
         return set;
     }
 
     @Override
     public List<T> toJavaList(List<T> list) {
-        for (T i : data) {
-            list.add(i);
-        }
+        Collections.addAll(list, data);
         return list;
     }
 

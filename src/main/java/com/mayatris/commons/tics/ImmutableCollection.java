@@ -41,8 +41,6 @@ public interface ImmutableCollection<E> extends Iterable<E>, ToJavaCollection<E>
 
     /**
      * test if empty
-     *
-     * @return
      */
     default boolean isEmpty() {
         return size() == 0;
@@ -97,10 +95,12 @@ public interface ImmutableCollection<E> extends Iterable<E>, ToJavaCollection<E>
         return addAll(tempArray);
     }
 
+    @SuppressWarnings("unchecked")
     <K extends ImmutableCollection<E>> K addAll(E... items);
 
     <K extends ImmutableCollection<E>> K remove(E object);
 
+    @SuppressWarnings("unchecked")
     <K extends ImmutableCollection<E>> K removeAll(E... items);
 
     default <K extends ImmutableCollection<E>> K removeAll(ImmutableCollection<E> items) {
@@ -108,6 +108,7 @@ public interface ImmutableCollection<E> extends Iterable<E>, ToJavaCollection<E>
         return removeAll(items.iterator());
     }
 
+    @SuppressWarnings("unchecked")
     default <K extends ImmutableCollection<E>> K removeAll(Iterator<E> items) {
         Objects.requireNonNull(items, "Parameter items, cannot be null");
         List<E> tempList = new LinkedList<>();
@@ -119,7 +120,7 @@ public interface ImmutableCollection<E> extends Iterable<E>, ToJavaCollection<E>
     default <K extends ImmutableCollection<E>> K removeAll(Iterable<E> items){
         Objects.requireNonNull(items, "Parameter items, cannot be null");
         return removeAll(items.iterator());
-    };
+    }
 
     default <K extends ImmutableCollection<E>> K removeAll(Collection<E> items) {
         Objects.requireNonNull(items, "Parameter items, cannot be null");

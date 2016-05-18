@@ -18,7 +18,7 @@ public interface ToJavaCollection<T> {
      * Add all items in this entity to a Java Set. The subtype of the set will be chosen by the implementation.
      */
     default Set<T> toJavaSet() {
-        return toJavaSet(new HashSet<T>());
+        return toJavaSet(new HashSet<>());
     }
 
     /**
@@ -30,7 +30,7 @@ public interface ToJavaCollection<T> {
      * Return all items as a Java List, with the type chosen by the implementation
      */
     default List<T> toJavaList() {
-        return toJavaList(new ArrayList<T>());
+        return toJavaList(new ArrayList<>());
     }
 
     /**

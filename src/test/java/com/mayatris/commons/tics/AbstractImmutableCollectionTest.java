@@ -1,18 +1,17 @@
 package com.mayatris.commons.tics;
 
-import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
+
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 
-public abstract class AbstractImmutableCollectionTest {
+abstract class AbstractImmutableCollectionTest {
 
 
     protected abstract ImmutableCollection<String> getCollectionInstance();
@@ -275,7 +274,7 @@ public abstract class AbstractImmutableCollectionTest {
             .containsExactly("b", "d");
     }
 
-    protected Iterator<String> newTestIterator() {
+    Iterator<String> newTestIterator() {
         return new Iterator<String>() {
 
             private int count = 0;
@@ -292,16 +291,11 @@ public abstract class AbstractImmutableCollectionTest {
         };
     }
 
-    protected Iterable<String> testIterableOf(final String... items) {
-        return new Iterable<String>() {
-            @Override
-            public Iterator<String> iterator() {
-                return testIteratorOf(items);
-            }
-        };
+    Iterable<String> testIterableOf(final String... items) {
+        return () -> testIteratorOf(items);
     }
 
-    protected Iterator<String> testIteratorOf(final String... items) {
+    Iterator<String> testIteratorOf(final String... items) {
         return new Iterator<String>() {
 
             private int count = 0;
