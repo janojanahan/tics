@@ -179,7 +179,7 @@ public abstract class AbstractImmutableListTest extends AbstractImmutableCollect
     @Test
     public void toJavaMap(){
         ImmutableCollection<String> immutableList = getListInstanceFromValues("1","1", "2", "3");
-        Map<Integer, String> javaMap = immutableList.constructMap(i -> Tuple2
+        Map<Integer, String> javaMap = immutableList.transformToMap(i -> Tuple2
             .of(Integer.parseInt(i))
             .and(i));
         assertThat(immutableList.size()).isEqualTo(4);

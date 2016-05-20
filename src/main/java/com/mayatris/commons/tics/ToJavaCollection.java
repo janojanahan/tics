@@ -39,15 +39,17 @@ public interface ToJavaCollection<T> {
     List<T> toJavaList(List<T> list);
 
     /**
-     * construct a map using the provided map function from this collection. The map type will be
+     * Transform this collection to a Java map using the provided mapping function. The map type will be
      * chosen by the implmentation
      */
-    default <KEY> Map<KEY,T> constructMap(Function<T, Tuple2<KEY, T>> mapFunction) {
-        return constructMap(mapFunction, new HashMap<>());
+    default <KEY> Map<KEY,T> transformToMap(Function<T, Tuple2<KEY, T>> mapFunction) {
+        return transformAndAddToMap(mapFunction, new HashMap<>());
     }
 
     /**
-     * fill in the provided map with values constructed from this collections using the provided map function
+     * Transform this collection into key value pairs using the provided mapping function,
+     * then adding values to the provided map.
+     * @return original instance of map provided in parameter.
      */
-    <KEY> Map<KEY,T> constructMap(Function<T, Tuple2<KEY,T>> mapFunction, HashMap<KEY, T> map);
+    <KEY> Map<KEY,T> transformAndAddToMap(Function<T, Tuple2<KEY,T>> mapFunction, HashMap<KEY, T> map);
 }

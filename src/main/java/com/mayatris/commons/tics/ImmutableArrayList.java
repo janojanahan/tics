@@ -132,7 +132,7 @@ public class ImmutableArrayList<T> implements ImmutableList<T> {
     }
 
     @Override
-    public <KEY> Map<KEY, T> constructMap(Function<T, Tuple2<KEY, T>> mapFunction, HashMap<KEY, T> map) {
+    public <KEY> Map<KEY, T> transformAndAddToMap(Function<T, Tuple2<KEY, T>> mapFunction, HashMap<KEY, T> map) {
         for(T i: data) {
             final Tuple2<KEY, T> tuple = mapFunction.apply(i);
             map.put(tuple.one(), tuple.two());
